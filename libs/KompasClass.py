@@ -571,3 +571,87 @@ class Kompas(object):
             date_text = f"{today.day:02d}.{today.month:02d}.{today.year:04d}"
         self._set_frame_field(col_num=135, text=date_text)
         print(f'Установлена дата в строке "Утвердил": {date_text}')
+
+
+
+
+
+
+
+
+
+
+    #РАБОТА СО СПЕЦИФИКАЦИЯМИ
+
+
+
+    def set_spec_library(self, lib_path: str, style_id: int):
+        """Смена библиотеки оформлений спецификации"""
+        try:
+            doc = self.application.ActiveDocument
+            if not doc or doc.DocumentType != 3:
+                print("Не спецификация")
+                return False
+            
+            spec_doc = self.module7.ISpecificationDocument(doc)
+            desc = spec_doc.SpecificationDescriptions.Active
+            
+            # Меняем параметры
+            desc.LayoutName = lib_path
+            desc.StyleID = style_id
+            desc.Update()
+            
+            print(f"OK: библиотека = {lib_path}, стиль = {style_id}")
+            return True
+            
+        except Exception as e:
+            print(f"Ошибка: {e}")
+            return False
+
+
+    def fill_spec_stamp_multi(self, cells: dict):
+        """Заполняет несколько ячеек текстом. cells = {номер_ячейки: "текст"}"""
+        try:
+            doc = self.application.ActiveDocument
+            if not doc or doc.DocumentType != 3:
+                print("Не спецификация")
+                return False
+            
+            spec_doc = self.module7.ISpecificationDocument(doc)
+            layout_sheet = spec_doc.LayoutSheets.Item(0)
+            stamp = layout_sheet.Stamp
+            
+            for cell_num, text in cells.items():
+                stamp.Text(cell_num).Str = text
+                print(f"Ячейка {cell_num}: {text}")
+            
+            stamp.Update()
+            return True
+            
+        except Exception as e:
+            print(f"Ошибка: {e}")
+            return False
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
