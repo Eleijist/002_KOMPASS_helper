@@ -2,9 +2,11 @@
 chcp 65001 >nul
 setlocal
 
+::здесь укажите путь к своему интропретатору
+set "python_path=%cd%\venv\Scripts\python.exe"  
+
 :: Определяем папки
 set "root=%cd%\D_bag"
-set "python_path=%cd%\venv\Scripts\python.exe"
 set "script_path=%cd%\algoritm.py"
 set "temp_file=%temp%\file_list%random%.txt"
 
