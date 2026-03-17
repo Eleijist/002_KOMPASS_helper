@@ -633,6 +633,28 @@ class Kompas(object):
             return False
 
 
+    def fill_stamp_data(self, data: str):
+        """заполняет датой ячейки для подписей, если указана фамилия для подписи"""
+        try:
+            doc = self.application.ActiveDocument
+            
+            spec_doc = self.module7.ISpecificationDocument(doc)
+            layout_sheet = spec_doc.LayoutSheets.Item(0)
+            stamp = layout_sheet.Stamp
+            
+            for i in range(6):
+                try:
+                    if stamp.Text(110+i).Str != "":
+                        stamp.Text(130+i).Str = data
+                except Exception as e:
+                    print(f"Ошибка вставки даты в поле {130+i}: {e}")
+            
+            stamp.Update()
+            return True
+            
+        except Exception as e:
+            print(f"Ошибка: {e}")
+            return False
 
 
 

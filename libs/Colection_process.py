@@ -143,7 +143,152 @@ class Colection_process:
 
 
 
+    def process4(self, file_path, txt): 
+        """
+        Изменение Литер с сохранением в СПЕЦИФИКАЦИИ
+        TXT - словарь {number: txt} который вставляеться в поля сппецификации
+        Выдаёт фукнцию которая сохраняет указанный фаил и его пдф в папку с изменением Лиетр
+        аргумент - набор массивов ["первая литера", "вторая литера", "третья литера", "папка для сохранения"], [], ...
+        если папка сохранениея пустая - сохраняеться в месте файла
+        """
+        
+        def proc4(*args):
+            #Открываем фаил 
+            self.kompas.open_document(file_path)
+            self.kompas.fill_spec_stamp_multi(txt)  
+            for i, arg in enumerate(args, 1):
+                try:    
+                    #Меняем литеры
+                    self.kompas.fill_spec_stamp_multi({
+                        40: arg[0],
+                        41: arg[1],
+                        42: arg[2],
+                    })
+
+                    #Формируем адресс фаила сохранения 
+                    if arg[3] != "" : 
+                        folder_path = os.path.join(os.path.dirname(file_path), arg[3])
+                        if not os.path.exists(folder_path):
+                            os.makedirs(folder_path)
+                        target_path = os.path.join(folder_path, os.path.basename(file_path))
+                    else:
+                        target_path = file_path
+
+                    #Сохраняем фаил
+                    self.kompas.save_document(target_path)
+
+                    #Сохраняем фаил в пдф
+                    pdf_path = os.path.splitext(target_path)[0] + ".pdf"
+                    self.kompas.save_document(pdf_path)
+          
+
+                except Exception as e:
+                    print(f"Ошибка при открытии файла: {e}")
+                    sys.exit(1)
+                
+            #закрываем фаил без сохранения
+            self.kompas.close_document(False)
+
+        return proc4
 
 
 
 
+
+
+    def process5(self, file_path): 
+        """
+        Изменение Литер и дат с сохранением 
+        Выдаёт фукнцию которая сохраняет указанный фаил и его пдф в папку с изменением Лиетр
+        аргумент - набор массивов ["первая литера", "вторая литера", "третья литера", "дата", "папка для сохранения"], [], ...
+        если папка сохранениея пустая - сохраняеться в месте файла
+        """
+        def proc1(*args):
+            for i, arg in enumerate(args, 1):
+                try:    
+                    #Открываем фаил 
+                    self.kompas.open_document(file_path)
+
+                    #Меняем литеры
+                    self.kompas.set_litera_1(arg[0])
+                    self.kompas.set_litera_2(arg[1])
+                    self.kompas.set_litera_3(arg[2])
+
+                    self.kompas.fill_stamp_data(arg[3])
+
+                    #Формируем адресс фаила сохранения 
+                    if arg[4] != "" : 
+                        folder_path = os.path.join(os.path.dirname(file_path), arg[4])
+                        if not os.path.exists(folder_path):
+                            os.makedirs(folder_path)
+                        target_path = os.path.join(folder_path, os.path.basename(file_path))
+                    else:
+                        target_path = file_path
+
+                    #Сохраняем фаил
+                    self.kompas.save_document(target_path)
+
+                    #Сохраняем фаил в пдф
+                    pdf_path = os.path.splitext(target_path)[0] + ".pdf"
+                    self.kompas.save_document(pdf_path)
+                
+                    #закрываем фаил без сохранения
+                    self.kompas.close_document(False)
+
+                except Exception as e:
+                    print(f"Ошибка при открытии файла: {e}")
+                    sys.exit(1)
+        return proc1
+
+
+
+
+
+    def process6(self, file_path): 
+        """
+        Изменение Литер с сохранением в СПЕЦИФИКАЦИИ с сохранением дат
+        TXT - словарь {number: txt} который вставляеться в поля сппецификации
+        Выдаёт фукнцию которая сохраняет указанный фаил и его пдф в папку с изменением Лиетр
+        аргумент - набор массивов ["первая литера", "вторая литера", "третья литера", "папка для сохранения"], [], ...
+        если папка сохранениея пустая - сохраняеться в месте файла
+        """
+        
+        def proc4(*args):
+            #Открываем фаил 
+            self.kompas.open_document(file_path)
+            for i, arg in enumerate(args, 1):
+                try:    
+                    #Меняем литеры
+                    self.kompas.fill_spec_stamp_multi({
+                        40: arg[0],
+                        41: arg[1],
+                        42: arg[2],
+                    })
+
+                    self.kompas.fill_stamp_data(arg[3])
+
+                    #Формируем адресс фаила сохранения 
+                    if arg[4] != "" : 
+                        folder_path = os.path.join(os.path.dirname(file_path), arg[4])
+                        if not os.path.exists(folder_path):
+                            os.makedirs(folder_path)
+                        target_path = os.path.join(folder_path, os.path.basename(file_path))
+                    else:
+                        target_path = file_path
+
+                    #Сохраняем фаил
+                    self.kompas.save_document(target_path)
+
+                    #Сохраняем фаил в пдф
+                    pdf_path = os.path.splitext(target_path)[0] + ".pdf"
+                    self.kompas.save_document(pdf_path)
+          
+
+                except Exception as e:
+                    print(f"Ошибка при открытии файла: {e}")
+                    sys.exit(1)
+                
+            #закрываем фаил без сохранения
+            self.kompas.close_document(False)
+
+        return proc4
